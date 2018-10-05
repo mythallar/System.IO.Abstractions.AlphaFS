@@ -7,14 +7,18 @@ namespace System.IO.Abstractions.AlphaFS
     [Serializable]
     public class DirectoryWrapper : DirectoryBase
     {
+        public DirectoryWrapper(IFileSystem fileSystem) : base(fileSystem)
+        {
+        }
+
         public override DirectoryInfoBase CreateDirectory(string path)
         {
-            return Converters.ConvertToBase(AfsDirectory.CreateDirectory(path));
+            return new DirectoryInfoWrapper(FileSystem, AfsDirectory.CreateDirectory(path));
         }
 
         public override DirectoryInfoBase CreateDirectory(string path, DirectorySecurity directorySecurity)
         {
-            return Converters.ConvertToBase(AfsDirectory.CreateDirectory(path, directorySecurity));
+            return new DirectoryInfoWrapper(FileSystem, AfsDirectory.CreateDirectory(path, directorySecurity));
         }
 
         public override void Delete(string path)
@@ -129,7 +133,7 @@ namespace System.IO.Abstractions.AlphaFS
 
         public override DirectoryInfoBase GetParent(string path)
         {
-            return Converters.ConvertToBase(AfsDirectory.GetParent(path));
+            return new DirectoryInfoWrapper(FileSystem, AfsDirectory.GetParent(path));
         }
 
         public override void Move(string sourceDirName, string destDirName)

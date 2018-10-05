@@ -8,7 +8,7 @@ namespace System.IO.Abstractions.AlphaFS
     {
         private readonly AfsFileInfo instance;
 
-        public FileInfoWrapper(AfsFileInfo instance)
+        public FileInfoWrapper(IFileSystem fileSystem, AfsFileInfo instance) : base(fileSystem)
         {
             if (instance == null)
             {
@@ -97,12 +97,12 @@ namespace System.IO.Abstractions.AlphaFS
 
         public override FileInfoBase CopyTo(string destFileName)
         {
-            return Converters.ConvertToBase(instance.CopyTo(destFileName));
+            return new FileInfoWrapper(FileSystem, instance.CopyTo(destFileName));
         }
 
         public override FileInfoBase CopyTo(string destFileName, bool overwrite)
         {
-            return Converters.ConvertToBase(instance.CopyTo(destFileName, overwrite));
+            return new FileInfoWrapper(FileSystem, instance.CopyTo(destFileName, overwrite));
         }
 
         public override Stream Create()
@@ -172,12 +172,12 @@ namespace System.IO.Abstractions.AlphaFS
 
         public override FileInfoBase Replace(string destinationFileName, string destinationBackupFileName)
         {
-            return Converters.ConvertToBase(instance.Replace(destinationFileName, destinationBackupFileName));
+            return new FileInfoWrapper(FileSystem, instance.Replace(destinationFileName, destinationBackupFileName));
         }
 
         public override FileInfoBase Replace(string destinationFileName, string destinationBackupFileName, bool ignoreMetadataErrors)
         {
-            return Converters.ConvertToBase(instance.Replace(destinationFileName, destinationBackupFileName, ignoreMetadataErrors));
+            return new FileInfoWrapper(FileSystem, instance.Replace(destinationFileName, destinationBackupFileName, ignoreMetadataErrors));
         }
 
         public override void SetAccessControl(FileSecurity fileSecurity)
@@ -187,7 +187,7 @@ namespace System.IO.Abstractions.AlphaFS
 
         public override DirectoryInfoBase Directory
         {
-            get { return Converters.ConvertToBase(instance.Directory); }
+            get { return new DirectoryInfoWrapper(FileSystem, instance.Directory); }
         }
 
         public override string DirectoryName

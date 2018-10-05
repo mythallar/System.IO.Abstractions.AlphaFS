@@ -8,6 +8,10 @@ namespace System.IO.Abstractions.AlphaFS
     [Serializable]
     public class FileWrapper : FileBase
     {
+        public FileWrapper(IFileSystem fileSystem) : base(fileSystem)
+        {
+        }
+
         public override void AppendAllLines(string path, IEnumerable<string> contents)
         {
             AfsFile.AppendAllLines(path, contents);

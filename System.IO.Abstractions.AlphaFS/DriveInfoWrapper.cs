@@ -16,8 +16,9 @@ namespace System.IO.Abstractions.AlphaFS
         /// <summary>
         /// Initializes a new instance of the <see cref="DriveInfoWrapper"/> class, which acts as a wrapper for a drive info.
         /// </summary>
+        /// <param name="fileSystem"></param>
         /// <param name="instance">The drive info.</param>
-        public DriveInfoWrapper(AfsDriveInfo instance)
+        public DriveInfoWrapper(IFileSystem fileSystem, AfsDriveInfo instance) : base(fileSystem)
         {
             _instance = instance ?? throw new ArgumentNullException(nameof(instance));
         }
@@ -130,7 +131,7 @@ namespace System.IO.Abstractions.AlphaFS
         /// <value>An object that contains the root directory of the drive.</value>
         public override DirectoryInfoBase RootDirectory
         {
-            get { return new DirectoryInfoWrapper(_instance.RootDirectory); }
+            get { return new DirectoryInfoWrapper(FileSystem, _instance.RootDirectory); }
         }
 
         /// <summary>
